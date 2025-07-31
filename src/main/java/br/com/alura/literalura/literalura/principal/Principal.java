@@ -1,9 +1,16 @@
 package br.com.alura.literalura.literalura.principal;
 
+import java.util.Scanner;
+
+import br.com.alura.literalura.literalura.service.ConsultaAPI;
+
 public class Principal {
+    private Scanner scanner = new Scanner(System.in);
+    ConsultaAPI consultaAPI = new ConsultaAPI();
+    private String ENDERECO = "https://gutendex.com/books/?search=";
 
     public void exibeMenu(){
-        System.out.println("""
+        var menu = ("""
 
                 ************* LiterAlura *************
 
@@ -14,19 +21,34 @@ public class Principal {
                 5 - Listar livros em um determinado idioma
 
                 0 - Sair
-
                 """);
 
         var escolha = -1;
-        
         while (escolha != 0) {
+            System.out.println(menu);
+            escolha = scanner.nextInt();
+            scanner.nextLine();
+
             switch (escolha) {
                 case 1:
                     buscarLivro();
+                    break;
+                case 0:
+                    System.out.println("Saindo...");
                     break;
                 default:
                     System.out.println("Digite uma opção válida");
             }
         }
     }
+
+    private void buscarLivro() {
+        System.out.println("\nDigite o livro que deseja informações: ");
+        var busca = scanner.nextLine();
+
+        var resultado = consultaAPI.obterDados(ENDERECO + busca);
+        System.out.println(resultado);
+    }
+
+    
 }
