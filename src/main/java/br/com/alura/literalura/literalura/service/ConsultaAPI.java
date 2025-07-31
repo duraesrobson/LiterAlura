@@ -24,4 +24,6 @@ public class ConsultaAPI {
         return "\n" + json;
     
         }
+    
+    public void buscarLivro(String livro){};
 }
