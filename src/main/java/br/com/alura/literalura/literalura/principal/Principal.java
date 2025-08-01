@@ -55,6 +55,9 @@ public class Principal {
                 case 3:
                     listarAutoresRegistrados();
                     break;
+                case 4:
+                    listarAutoresVivos();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -107,6 +110,23 @@ public class Principal {
                                 .collect(Collectors.joining(", "));
                                 
             System.out.println(autor.getNome() + " - Livros: " + nomesLivros);
+        }
+    }
+
+    private void listarAutoresVivos() {
+        System.out.println("\nQual o ano que deseja buscar:");
+        var ano = scanner.nextInt();
+
+        List<Autor> autores = repositorioLivro.findAutoresVivosEmAno(ano);
+
+        for(Autor autor : autores){
+            
+            List<Livro> livros = autor.getLivros();
+            String nomesLivros = livros.stream()
+                                .map(Livro::getTitulo)
+                                .collect(Collectors.joining(", "));
+                                
+            System.out.println(autor.getNome() + " - Ano de falecimento: " + autor.getAnoFalecimento() + " - Livros: " + nomesLivros);
         }
     }
     

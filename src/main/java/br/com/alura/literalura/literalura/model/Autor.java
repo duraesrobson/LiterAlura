@@ -22,7 +22,7 @@ public class Autor {
 
     private String nome;
     private Integer anoNascimento;
-    private Integer anoFalescimento;
+    private Integer anoFalecimento;
     
     @ManyToMany(mappedBy = "autores", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Livro> livros = new ArrayList<>();
@@ -40,7 +40,7 @@ public class Autor {
     public Autor(DadosAutor dadosAutor){
         this.nome = dadosAutor.nome();
         this.anoNascimento = dadosAutor.anoNascimento();
-        this.anoFalescimento = dadosAutor.anoFalescimento();
+        this.anoFalecimento = dadosAutor.anoFalecimento();
     }
 
     public String getNome() {
@@ -55,11 +55,11 @@ public class Autor {
     public void setAnoNascimento(Integer anoNascimento) {
         this.anoNascimento = anoNascimento;
     }
-    public Integer getAnoFalescimento() {
-        return anoFalescimento;
+    public Integer getAnoFalecimento() {
+        return anoFalecimento;
     }
-    public void setAnoFalescimento(Integer anoFalescimento) {
-        this.anoFalescimento = anoFalescimento;
+    public void setAnoFalecimento(Integer anoFalecimento) {
+        this.anoFalecimento = anoFalecimento;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Autor {
         StringBuilder sb = new StringBuilder();
         sb.append("Nome: ").append(nome);
         sb.append(",\nAno de nascimento: ").append(anoNascimento);
-        sb.append(",\nAno de falescimento: ").append(anoFalescimento).append("\n");
+        sb.append(",\nAno de falecimento: ").append(anoFalecimento).append("\n");
         return sb.toString();
     }
 
