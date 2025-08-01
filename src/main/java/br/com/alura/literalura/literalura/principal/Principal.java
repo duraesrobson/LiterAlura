@@ -1,11 +1,15 @@
 package br.com.alura.literalura.literalura.principal;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import br.com.alura.literalura.literalura.dto.DadosLivro;
 import br.com.alura.literalura.literalura.dto.RespostaApi;
+import br.com.alura.literalura.literalura.model.Autor;
 import br.com.alura.literalura.literalura.model.Livro;
+import br.com.alura.literalura.literalura.repository.LivroRepository;
 import br.com.alura.literalura.literalura.util.ConsultaAPI;
 import br.com.alura.literalura.literalura.util.ConversorDeJson;
 
@@ -14,6 +18,12 @@ public class Principal {
     private ConsultaAPI consultaAPI = new ConsultaAPI();
     private ConversorDeJson conversor = new ConversorDeJson();
     private String ENDERECO = "https://gutendex.com/books/?search=";
+
+    private LivroRepository repositorioLivro;
+
+    public Principal(LivroRepository repositorioLivro){
+        this.repositorioLivro = repositorioLivro;
+    }
 
     public void exibeMenu(){
         var menu = ("""
@@ -42,6 +52,9 @@ public class Principal {
                 case 2:
                     listarLivrosRegistrados();
                     break;
+                case 3:
+                    listarAutoresRegistrados();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -58,7 +71,7 @@ public class Principal {
         for(DadosLivro dados: livros){
             Livro livro = new Livro(dados);
             // dadosSeries.add(dados);
-            // repositorio.save(livro);
+            repositorioLivro.save(livro);
             System.out.println("\n" + livro);
         }
     }
@@ -73,7 +86,28 @@ public class Principal {
     }
 
     private void listarLivrosRegistrados() {
-        
+        System.out.println("\nLivros buscados:");
+        var livros = repositorioLivro.findAll();
+
+        livros.stream()
+            .sorted(Comparator.comparing(Livro::getTitulo))
+            .forEach(System.out::println);
+
+    }
+
+    private void listarAutoresRegistrados() {
+        System.out.println("\nAutores buscados:");  
+        List<Autor> autores = repositorioLivro.listarAutoresBuscados();
+
+        for(Autor autor : autores){
+            
+            List<Livro> livros = autor.getLivros();
+            String nomesLivros = livros.stream()
+                                .map(Livro::getTitulo)
+                                .collect(Collectors.joining(", "));
+                                
+            System.out.println(autor.getNome() + " - Livros: " + nomesLivros);
+        }
     }
     
 }

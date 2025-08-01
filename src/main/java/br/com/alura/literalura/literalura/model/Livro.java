@@ -2,6 +2,7 @@ package br.com.alura.literalura.literalura.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import br.com.alura.literalura.literalura.dto.DadosLivro;
 import jakarta.persistence.CascadeType;
@@ -40,11 +41,9 @@ public class Livro {
         this.titulo = dadosLivro.titulo();
         this.idioma = dadosLivro.idiomas();
         this.downloads = dadosLivro.downloads();
-        this.autores = dadosLivro.autores()
-                                   .stream()
-                                   .map(Autor::new) // chama o construtor de Autor
-                                   .toList();
-
+        this.autores = dadosLivro.autores().stream()
+        .map(dadosAutor -> new Autor(dadosAutor))
+        .collect(Collectors.toList());
     }
 
     public String getTitulo() {
