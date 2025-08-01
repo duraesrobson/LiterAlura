@@ -39,6 +39,9 @@ public class Principal {
                 case 1:
                     buscarLivro();
                     break;
+                case 2:
+                    listarLivrosRegistrados();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -48,6 +51,7 @@ public class Principal {
         }
     }
 
+    
     private void buscarLivro() {
         List<DadosLivro> livros = getDadosLivro();
 
@@ -58,14 +62,18 @@ public class Principal {
             System.out.println("\n" + livro);
         }
     }
-
+    
     private List<DadosLivro> getDadosLivro() {
         System.out.print("Digite o nome do livro para buscar: ");
         var nomeLivro = scanner.nextLine();
         var json = consultaAPI.obterDados(ENDERECO + nomeLivro.replace(" ", "%20"));
-
+        
         RespostaApi resposta = conversor.converterJsonParaObjeto(json, RespostaApi.class);
         return resposta.results();
+    }
+
+    private void listarLivrosRegistrados() {
+        
     }
     
 }
