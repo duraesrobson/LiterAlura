@@ -58,6 +58,9 @@ public class Principal {
                 case 4:
                     listarAutoresVivos();
                     break;
+                case 5:
+                    listarLivrosPorIdioma();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -114,7 +117,7 @@ public class Principal {
     }
 
     private void listarAutoresVivos() {
-        System.out.println("\nQual o ano que deseja buscar:");
+        System.out.println("\nQual o ano que deseja buscar?");
         var ano = scanner.nextInt();
 
         List<Autor> autores = repositorioLivro.findAutoresVivosEmAno(ano);
@@ -128,6 +131,18 @@ public class Principal {
                                 
             System.out.println(autor.getNome() + " - Ano de falecimento: " + autor.getAnoFalecimento() + " - Livros: " + nomesLivros);
         }
+    }
+
+    private void listarLivrosPorIdioma() {
+        System.out.println("\nQual o idioma? (Ex: pt, en, fr, etc)");
+        String idioma = scanner.nextLine();
+
+        List<Livro> livros = repositorioLivro.findByIdiomas(idioma);
+
+        livros.stream()
+            .sorted(Comparator.comparing(Livro::getTitulo))
+            .forEach(System.out::println);
+
     }
     
 }

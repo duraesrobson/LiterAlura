@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import br.com.alura.literalura.literalura.dto.DadosLivro;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,10 @@ public class Livro {
     private Long id;
 
     private String titulo;
-    private List<String> idioma;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> idiomas = new ArrayList<>();
+
     private Integer downloads;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -39,7 +43,7 @@ public class Livro {
 
     public Livro(DadosLivro dadosLivro){
         this.titulo = dadosLivro.titulo();
-        this.idioma = dadosLivro.idiomas();
+        this.idiomas = new ArrayList<>(dadosLivro.idiomas());
         this.downloads = dadosLivro.downloads();
         this.autores = dadosLivro.autores().stream()
         .map(dadosAutor -> new Autor(dadosAutor))
@@ -55,11 +59,11 @@ public class Livro {
     }
 
     public List<String> getIdioma() {
-        return idioma;
+        return idiomas;
     }
 
     public void setIdioma(List<String> idioma) {
-        this.idioma = idioma;
+        this.idiomas = idioma;
     }
 
     public Integer getDownloads() {
@@ -75,7 +79,7 @@ public class Livro {
         StringBuilder sb = new StringBuilder();
         sb.append("Título: ").append(titulo);
         sb.append(",\nAutores: ").append(autores);
-        sb.append(",\nIdiomas: ").append(idioma);
+        sb.append(",\nIdiomas: ").append(idiomas);
         sb.append(",\nDownloads: ").append(downloads).append("\n");
         return sb.toString();
     }

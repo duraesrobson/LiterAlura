@@ -23,4 +23,7 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
           AND (a.anoFalecimento IS NULL OR a.anoFalecimento > :ano)
     """)
     List<Autor> findAutoresVivosEmAno(@Param("ano") int ano);
+
+    @Query("SELECT l FROM Livro l WHERE :idioma MEMBER OF l.idiomas")
+    List<Livro> findByIdiomas(@Param("idioma") String idioma);
 }
