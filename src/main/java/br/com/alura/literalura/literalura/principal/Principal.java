@@ -3,16 +3,16 @@ package br.com.alura.literalura.literalura.principal;
 import java.util.List;
 import java.util.Scanner;
 
-import br.com.alura.literalura.literalura.model.DadosLivro;
-import br.com.alura.literalura.literalura.model.DadosResposta;
+import br.com.alura.literalura.literalura.dto.DadosLivro;
+import br.com.alura.literalura.literalura.dto.RespostaApi;
 import br.com.alura.literalura.literalura.model.Livro;
-import br.com.alura.literalura.literalura.service.ConsultaAPI;
-import br.com.alura.literalura.literalura.service.ConverteDados;
+import br.com.alura.literalura.literalura.util.ConsultaAPI;
+import br.com.alura.literalura.literalura.util.ConversorDeJson;
 
 public class Principal {
     private Scanner scanner = new Scanner(System.in);
     private ConsultaAPI consultaAPI = new ConsultaAPI();
-    private ConverteDados conversor = new ConverteDados();
+    private ConversorDeJson conversor = new ConversorDeJson();
     private String ENDERECO = "https://gutendex.com/books/?search=";
 
     public void exibeMenu(){
@@ -64,7 +64,7 @@ public class Principal {
         var nomeLivro = scanner.nextLine();
         var json = consultaAPI.obterDados(ENDERECO + nomeLivro.replace(" ", "%20"));
 
-        DadosResposta resposta = conversor.obterDados(json, DadosResposta.class);
+        RespostaApi resposta = conversor.converterJsonParaObjeto(json, RespostaApi.class);
         return resposta.results();
     }
     

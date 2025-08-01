@@ -2,6 +2,9 @@ package br.com.alura.literalura.literalura.model;
 
 import java.util.List;
 
+import br.com.alura.literalura.literalura.dto.DadosAutor;
+import br.com.alura.literalura.literalura.dto.DadosLivro;
+
 public class Livro {
     private String titulo;
     private List<DadosAutor> autores;

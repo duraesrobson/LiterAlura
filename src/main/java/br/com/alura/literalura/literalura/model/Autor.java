@@ -1,5 +1,7 @@
 package br.com.alura.literalura.literalura.model;
 
+import br.com.alura.literalura.literalura.dto.DadosAutor;
+
 public class Autor {
     private String nome;
     private Integer anoNascimento;
