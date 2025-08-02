@@ -2,20 +2,9 @@ package br.com.alura.literalura.literalura.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import br.com.alura.literalura.literalura.dto.DadosLivro;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "livros")
@@ -23,81 +12,69 @@ public class Livro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(length = 1000)
     private String titulo;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> idiomas = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "livros_autores",
+        joinColumns = @JoinColumn(name = "livro_id"),
+        inverseJoinColumns = @JoinColumn(name = "autor_id"))
+    private List<Autor> autores = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private Idioma idioma;
 
     private Integer downloads;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "livro_autor",
-        joinColumns = @JoinColumn(name = "livro_id"),
-        inverseJoinColumns = @JoinColumn(name = "autor_id")
-    )
-    private List<Autor> autores = new ArrayList<>();
+    public Livro() {}
 
-    public Livro(){}
-
-    public Livro(DadosLivro dadosLivro){
+    public Livro(DadosLivro dadosLivro) {
         this.titulo = dadosLivro.titulo();
-        this.idiomas = new ArrayList<>(dadosLivro.idiomas());
+        
+        if (dadosLivro.idiomas() != null && !dadosLivro.idiomas().isEmpty()) {
+            this.idioma = Idioma.fromString(dadosLivro.idiomas().toString().split(",")[0].trim());
+        } else {
+            this.idioma = Idioma.DESCONHECIDO;
+        }
+
         this.downloads = dadosLivro.downloads();
-        this.autores = dadosLivro.autores().stream()
-        .map(dadosAutor -> new Autor(dadosAutor))
-        .collect(Collectors.toList());
     }
 
-    public String getTitulo() {
-        return titulo;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public List<String> getIdioma() {
-        return idiomas;
-    }
+    public Idioma getIdioma() { return idioma; }
+    public void setIdioma(Idioma idioma) { this.idioma = idioma; }
 
-    public void setIdioma(List<String> idioma) {
-        this.idiomas = idioma;
-    }
+    public Integer getDownloads() { return downloads; }
+    public void setDownloads(Integer downloads) { this.downloads = downloads; }
 
-    public Integer getDownloads() {
-        return downloads;
-    }
+    public List<Autor> getAutores() { return autores; }
+    public void setAutores(List<Autor> autores) { this.autores = autores; }
 
-    public void setDownloads(Integer downloads) {
-        this.downloads = downloads;
-    }
-    
     @Override
     public String toString() {
+        StringBuilder autoresStr = new StringBuilder();
+        for (int i = 0; i < autores.size(); i++) {
+            autoresStr.append(autores.get(i).getNome());
+            if (i < autores.size() - 1) {
+                autoresStr.append(", ");
+            }
+        }
+
         StringBuilder sb = new StringBuilder();
-        sb.append("Título: ").append(titulo);
-        sb.append(",\nAutores: ").append(autores);
-        sb.append(",\nIdiomas: ").append(idiomas);
-        sb.append(",\nDownloads: ").append(downloads).append("\n");
+        sb.append("\n********** LIVRO **********\n");
+        sb.append("Título: ").append(titulo).append("\n");
+        sb.append("Autores: ").append(autoresStr.toString()).append("\n");
+        sb.append("Idioma: ").append(idioma).append("\n");
+        sb.append("Downloads: ").append(downloads).append("\n");
+        sb.append("***************************");
+
         return sb.toString();
-    }
 
-    public Long getId() {
-        return id;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public List<Autor> getAutores() {
-        return autores;
-    }
-
-    public void setAutores(List<Autor> autores) {
-        this.autores = autores;
-    }
-    
 }

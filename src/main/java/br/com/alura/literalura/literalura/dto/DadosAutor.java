@@ -7,14 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public record DadosAutor(
     @JsonAlias("name") String nome,
     @JsonAlias("birth_year") Integer anoNascimento,
-    @JsonAlias("death_year") Integer anoFalecimento
-) {
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Nome: ").append(nome);
-        sb.append(",\nAno de nascimento: ").append(anoNascimento);
-        sb.append(",\nAno de falecimento: ").append(anoFalecimento).append("\n");
-        return sb.toString();
-    }    
+    @JsonAlias("death_year") Integer anoFalecimento) {
+   
 }

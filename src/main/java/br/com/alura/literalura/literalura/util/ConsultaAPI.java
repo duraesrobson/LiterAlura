@@ -15,6 +15,7 @@ public class ConsultaAPI {
             HttpResponse<String> response = null;
     
         try {
+            System.out.println("Buscando informações...");
             response = client.send(request,HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -22,8 +23,5 @@ public class ConsultaAPI {
     
         String json = response.body();
         return "\n" + json;
-    
         }
-    
-    public void buscarLivro(String livro){};
 }
