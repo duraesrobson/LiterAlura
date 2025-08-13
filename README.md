@@ -23,9 +23,9 @@ O **LiterAlura** é uma aplicação de console em Java com Spring Boot criada co
 
 ## Tecnologias Utilizadas
 
-- **Backend**: Java 17, Spring Boot 3.x  
+- **Backend**: Java 17, Spring Boot 3  
 - **Persistência**: Spring Data JPA, Hibernate  
-- **Banco de Dados**: PostgreSQL (pode usar outros compatíveis com Spring Data JPA)  
+- **Banco de Dados**: PostgreSQL  
 - **Consumo de API**: Gutendex API (biblioteca pública de livros gratuitos)  
 - **Construção**: Maven  
 - **Utilitários**: Enum para idiomas, tratamento de fallback, comparação, ordenação
